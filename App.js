@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import LoadScreen from './navigation/screens/LoadScreen';
+import LoginScreen from './navigation/screens/LoginScreen';
+import SignupScreen from './navigation/screens/SignupScreen';
+import HomeScreen from './navigation/screens/HomeScreen';
+import ProfileScreen from './navigation/screens/ProfileScreen';
+import BottomTab from './navigation/BottomTab';
+
+import {initializeApp} from 'firebase/app';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCV-Wp6n9JYqDd4Dt-y-cWUicuTGU_Ovvs",
+  authDomain: "testapp-7a93c.firebaseapp.com",
+  databaseURL: "https://testapp-7a93c-default-rtdb.firebaseio.com",
+  projectId: "testapp-7a93c",
+  storageBucket: "testapp-7a93c.appspot.com",
+  messagingSenderId: "304480105424",
+  appId: "1:304480105424:web:3b16ec5dd4319cac41ffd5",
+  measurementId: "G-X01L9JDR3X"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="LoadScreen" component={LoadScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="SignupScreen" component={SignupScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="BottomTab" component={BottomTab}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
