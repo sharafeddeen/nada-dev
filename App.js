@@ -28,6 +28,9 @@ const app = initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
 
+//<Stack.Screen name="HomeScreen" component={HomeScreen} />
+//<Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -35,9 +38,7 @@ export default function App() {
         <Stack.Screen name="LoadScreen" component={LoadScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="BottomTab" component={BottomTab}/>
+        <Stack.Screen name="BottomTab" component={BottomTab} options={{headerShown: false, headerLeft: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
