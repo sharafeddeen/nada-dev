@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 50,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
 
   containerInput: {
@@ -142,10 +142,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'orange', 
+    backgroundColor: '#add8e6', 
     textAlign: 'center',        
     height: 50,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    borderRadius: 20
   },
   buttonImage: {
     marginTop: 20,
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     paddingHorizontal:10,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'orange', 
+    backgroundColor: '#add8e6', 
     textAlign: 'center',        
     height: 45,
   },
