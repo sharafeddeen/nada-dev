@@ -9,19 +9,6 @@ export default function SignupScreen ({navigation}) {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
 
-
-  const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log("Look at you all signed up and stuff!")
-    })
-    .catch((error) => {
-      console.log("Error but don't worry -- wer're working on it!")
-      console.log(error);
-    });
-
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Let's get this profile started!</Text>
@@ -50,7 +37,7 @@ export default function SignupScreen ({navigation}) {
         <TextInput  
           style={styles.inputBox}
           onChangeText={(text) => setPassword(text)}
-          placeholder="not your birthday"
+          placeholder=" 6< characters -- goal: so complex you'll forget it"
           secureTextEntry={true}
         />
       </View>
@@ -60,7 +47,19 @@ export default function SignupScreen ({navigation}) {
         onPress={ () => 
           navigation.navigate('BottomTab')
         }>
-        <Text style={styles.buttonText}>Create Profile</Text>
+        <Text style={styles.buttonText} onPress={() => {
+          const auth = getAuth();
+          createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // Signed in 
+              const user = userCredential.user;
+              console.log("Look at you all signed up and stuff!")
+            })
+            .catch((error) => {
+              console.log("Error but don't worry -- wer're working on it!")
+              console.log(error);
+            });
+        }}>Create Profile</Text>
       </TouchableOpacity>
     </View>
   );
