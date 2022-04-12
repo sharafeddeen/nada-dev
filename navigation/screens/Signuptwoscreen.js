@@ -1,61 +1,60 @@
 import * as React from 'react';
-import {useEffect} from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image, Button} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-export default function LoginScreen ({navigation}) {
+export default function SignupScreen ({navigation}) {
 
-  / --- state variables for:    essential attributes of user signup --- /
-  const [email, setEmail] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
-
-  let user = null;
-
-
-  const auth = getAuth();
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      user = userCredential.user;
-      console.log("user logged in successfully!")
-    })
-    .catch((error) => {
-      console.log("Error during login")
-      console.log(error);
-    });
+  //for profile image
+  const [image, setImage] = React.useState(null);
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+    };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>If it's not obvious, this is the login page.</Text>
-
+      <ScrollView>
+      <Text style={styles.headerText}>Other essential information!</Text>
       <View style={styles.containerInput}>
-        <Text style={styles.inputHeader}>email</Text>
-        <TextInput  
-          style={styles.inputBox}
-          onChangeText={(text) => setEmail(text)}
-          placeholder="totally@obvious.com"
-        />
-      </View>
-
-      <View style={styles.containerInput}>
-        <Text style={styles.inputHeader}>password</Text>
+        <Text style={styles.inputHeader}>Bio</Text>
         <TextInput  
           style={styles.inputBox}
           onChangeText={(text) => setPassword(text)}
-          placeholder="You didn't forget it right?"
-          secureTextEntry={true}
+          placeholder="tell us a little bit about yourself"
         />
       </View>
 
+      <View style={styles.containerInput}>
+        <Text style={styles.inputHeader}>Activities </Text>
+        <TextInput  
+          style={styles.inputBox}
+          onChangeText={(text) => setPassword(text)}
+          placeholder="Seperate each by a ','"
+        />
+      </View>
+    
+      <Text style={styles.inputHeader}>Profile Image </Text>
+      <Button title="Change Profile Image" style={styles.button} onPress={pickImage} />
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} 
       <TouchableOpacity
         style={styles.button} 
         onPress={ () => 
-          //navigation.navigate('home')
-          console.log(user)
+          navigation.navigate('BottomTab')
         }>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText} > Profile</Text>
       </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 
@@ -118,8 +117,26 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: 'center'
   },
+  buttonImage: {
+    marginTop: 20,
+    alignItems: 'center',
+    paddingHorizontal:10,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'orange', 
+    textAlign: 'center',        
+    height: 45,
+  },
   buttonText: {
     fontWeight: 'bold',
     fontSize: 25,
+  },
+  imageContainer: {
+    padding: 30
+  },
+  image: {
+    width: 400,
+    height: 300,
+    resizeMode: 'cover'
   }
 });

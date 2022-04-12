@@ -6,7 +6,7 @@ export default function ChatScreen({navigation}){
     return(
         <View>
             <ScrollView>
-                <ChatCard></ChatCard>
+                <ChatCard navigation={navigation}></ChatCard>
             </ScrollView>
         </View>
     );

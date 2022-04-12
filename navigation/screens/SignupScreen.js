@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView} from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function SignupScreen ({navigation}) {
 
@@ -9,10 +10,30 @@ export default function SignupScreen ({navigation}) {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
 
+
+  //for profile image
+  const [image, setImage] = React.useState(null);
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+    };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Let's get this profile started!</Text>
+      <ScrollView>
 
+      <Text style={styles.headerText}>Let's get this profile started!</Text>
       <View style={styles.containerInput}>
         <Text style={styles.inputHeader}>your name</Text>
         <TextInput  
@@ -44,9 +65,7 @@ export default function SignupScreen ({navigation}) {
 
       <TouchableOpacity
         style={styles.button} 
-        onPress={ () => 
-          navigation.navigate('BottomTab')
-        }>
+      >
         <Text style={styles.buttonText} onPress={() => {
           const auth = getAuth();
           createUserWithEmailAndPassword(auth, email, password)
@@ -54,13 +73,18 @@ export default function SignupScreen ({navigation}) {
               // Signed in 
               const user = userCredential.user;
               console.log("Look at you all signed up and stuff!")
+              navigation.navigate('SignuptwoScreen')
+
             })
             .catch((error) => {
               console.log("Error but don't worry -- wer're working on it!")
+              navigation.navigate('SignuptwoScreen')
+
               console.log(error);
             });
-        }}>Create Profile</Text>
+        }}  >Create Profile</Text>
       </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 
@@ -123,8 +147,26 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: 'center'
   },
+  buttonImage: {
+    marginTop: 20,
+    alignItems: 'center',
+    paddingHorizontal:10,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'orange', 
+    textAlign: 'center',        
+    height: 45,
+  },
   buttonText: {
     fontWeight: 'bold',
     fontSize: 25,
+  },
+  imageContainer: {
+    padding: 30
+  },
+  image: {
+    width: 400,
+    height: 300,
+    resizeMode: 'cover'
   }
 });

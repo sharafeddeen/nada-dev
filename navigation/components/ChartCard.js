@@ -1,11 +1,13 @@
-import React from 'react'
+import * as React from 'react'
 import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native'
 import exampleImage from '../Assets/paul.jpg'
 
-function ChatCard(){
+
+function ChatCard({navigation}){
+
     return(
         <View style={styles.cardContainer}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
                 <Image style={styles.imageStyle} source={exampleImage} />
                 <Text style={styles.name}>Vin Diesel</Text>
                 <Text style={styles.message}>You can do anything with family and I love to drive</Text>

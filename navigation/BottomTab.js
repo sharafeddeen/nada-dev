@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet} from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,6 +9,9 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LikesScreen from './screens/LikesScreen';
 import ChatScreen from './screens/ChatScreen';
+import ChatTwoScreen from './screens/ChatTwoScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+
 //Screen Names
 const profilesName = 'People';
 const likesName = 'Reactions';
@@ -17,6 +20,16 @@ const chatName = 'Chat'
 
 const Tab = createBottomTabNavigator();
 
+const ChatStack = createStackNavigator();
+
+function ChatNavigationScreen(){
+    return(
+        <ChatStack.Navigator>
+            <ChatStack.Screen name="Chats" component={ChatScreen} options={{headerLeft: false}}/>
+            <ChatStack.Screen name="Chat" component={ChatTwoScreen} />
+        </ChatStack.Navigator>
+    )
+}
 export default function Tabs ({navigation}) {
     return (
       <NavigationContainer independent={true}>
@@ -43,8 +56,9 @@ export default function Tabs ({navigation}) {
                 <Tab.Screen name={profilesName} component={HomeScreen}/>
                 <Tab.Screen name={likesName} component={LikesScreen}/>
                 <Tab.Screen name={personalName} component={ProfileScreen} />
-                <Tab.Screen name={chatName} component={ChatScreen} />
+                <Tab.Screen name={chatName} component={ChatNavigationScreen} options={{headerShown: false, headerLeft: null }} />
             </Tab.Navigator>
+
       </NavigationContainer>
     );
   }

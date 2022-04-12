@@ -6,10 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoadScreen from './navigation/screens/LoadScreen';
 import LoginScreen from './navigation/screens/LoginScreen';
 import SignupScreen from './navigation/screens/SignupScreen';
-import HomeScreen from './navigation/screens/HomeScreen';
-import ProfileScreen from './navigation/screens/ProfileScreen';
+import SignuptwoScreen from './navigation/screens/Signuptwoscreen';
 import BottomTab from './navigation/BottomTab';
-
+import ChatCard from './navigation/components/ChartCard'
+import ChatTwoScreen from './navigation/screens/ChatTwoScreen';
 import {initializeApp} from 'firebase/app';
 
 const firebaseConfig = {
@@ -27,18 +27,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
-
-//<Stack.Screen name="HomeScreen" component={HomeScreen} />
-//<Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-
-export default function App() {
+export default function App({navigation}) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="LoadScreen" component={LoadScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
-        <Stack.Screen name="BottomTab" component={BottomTab} options={{headerShown: false, headerLeft: false }}/>
+        <Stack.Screen name="SignuptwoScreen" component={SignuptwoScreen} />
+        <Stack.Screen name="BottomTab" component={BottomTab} options={{headerShown: false, headerLeft: false }} navigation={navigation}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

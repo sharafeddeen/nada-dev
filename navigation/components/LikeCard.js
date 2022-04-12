@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native'
 import exampleImage from '../Assets/paul.jpg'
 
-function LikeCard(){
+function LikeCard({likePerson}){
     return(
         <View style={styles.cardContainer}>
             <Image style={styles.imageStyle} source={exampleImage}/>
@@ -11,7 +11,7 @@ function LikeCard(){
             <Text style={styles.bio}>Bio: You can do anything with family and I love to drive</Text>
             <Text style={styles.activities}>Activies: Bowling, Driving, Drinking</Text>
             <TouchableOpacity style={styles.wink}>
-                <Text>Wink Back</Text>
+                <Text>Let's Hangout</Text>
             </TouchableOpacity>
         </View>
     );
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     wink: {
         backgroundColor: '#ffff00', 
-        width: '25%',
+        width: '30%',
         left: 198,
         bottom: 160,
         borderRadius: 20,
