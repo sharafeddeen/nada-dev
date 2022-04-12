@@ -24,7 +24,7 @@ export default function LoginScreen ({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>It's been a long day without you my friend</Text>
+      <Text style={styles.headerText}>If it's not obvious, this is the login page.</Text>
 
       <View style={styles.containerInput}>
         <Text style={styles.inputHeader}>email</Text>
@@ -40,7 +40,7 @@ export default function LoginScreen ({navigation}) {
         <TextInput  
           style={styles.inputBox}
           onChangeText={(text) => setPassword(text)}
-          placeholder="not your birthday"
+          placeholder="You didn't forget it right?"
           secureTextEntry={true}
         />
       </View>
@@ -51,7 +51,7 @@ export default function LoginScreen ({navigation}) {
           //navigation.navigate('BottomTab')
           console.log(user)
         }>
-        <Text style={styles.buttonText}>Push me daddy!</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
   );

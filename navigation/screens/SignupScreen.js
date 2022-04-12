@@ -15,10 +15,10 @@ export default function SignupScreen ({navigation}) {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      console.log("signup processed successfully!")
+      console.log("Look at you all signed up and stuff!")
     })
     .catch((error) => {
-      console.log("Error during signup")
+      console.log("Error but don't worry -- wer're working on it!")
       console.log(error);
     });
 
@@ -27,7 +27,7 @@ export default function SignupScreen ({navigation}) {
       <Text style={styles.headerText}>Let's get this profile started!</Text>
 
       <View style={styles.containerInput}>
-        <Text style={styles.inputHeader}>username</Text>
+        <Text style={styles.inputHeader}>your name</Text>
         <TextInput  
           style={styles.inputBox}
           onChangeText={(text) => setUsername(text)}
