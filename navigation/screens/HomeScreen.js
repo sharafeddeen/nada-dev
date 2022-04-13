@@ -1,14 +1,23 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView, useState} from 'react-native';
 import Card1 from '../components/Card1';
 import Card2 from '../components/Card2';
 
 export default function HomeScreen ({navigation}) {
 
-  const people =[1, 2, 3, 4]
+  const [profiles, setProfiles] = React.useState([{id: 1}, {id: 2}, {id: 3}, {id: 4} ]);
+
+  let keyIndex;
+  const wantsToHangout = (index) => {
+
+    const filteredProfiles = profiles.filter(item => item.id !== index);
+
+    setProfiles(filteredProfiles);
+        
+  }
 
   const renderItem = ({item, index}) => {
-      return(
+        return(
           <ScrollView 
               horizontal= {true}
               decelerationRate={200}
@@ -27,26 +36,46 @@ export default function HomeScreen ({navigation}) {
           </ScrollView>
       )
   }
+  if(profiles.length == 0){
+    return (
+      <View style={styles.container}>
+          <Text style={styles.nomoretext}>No more profiles! It looks like your really popular!</Text>    
+          <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( keyIndex)}>
+          <Text style={styles.text}> Let's Hangout</Text>
+          </TouchableOpacity>      
+      </View>
+    )
+  }
+  else{
     return (
       <View style={styles.container}>
           <View style = {{ alignItems: 'center', justifyContent: 'center', height: '82%'}}>
             <FlatList
             showsVerticalScrollIndicator={false}
-            data={people}
+            data={profiles}
             renderItem={renderItem}
             pagingEnabled
-            keyExtractor={item => item}
-            decelerationRate= {'normal'}/>
-          </View>            
-          <TouchableOpacity style={styles.wink}>
-            <Text style={styles.text}> Let's Hangout</Text>
-          </TouchableOpacity>
+            keyExtractor={item => keyIndex = item.id}
+            decelerationRate= {'normal'}
+            />
+          </View>      
+          <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( keyIndex)}>
+          <Text style={styles.text}> Let's Hangout</Text>
+          </TouchableOpacity>      
       </View>
     );
+  }
+    
   }
 
   const radius = 20;
 const styles = StyleSheet.create({
+  nomoretext:{
+    fontSize: 25,
+    textAlign: 'center',
+    margin: 20
+
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
