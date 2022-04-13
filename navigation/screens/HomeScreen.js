@@ -6,7 +6,7 @@ export default function HomeScreen ({navigation}) {
       <View style={styles.container}>
         < Slideshow></Slideshow>
             <TouchableOpacity style={styles.wink}>
-                <Text style={styles.text}> Wink</Text>
+                <Text style={styles.text}> Let's Hangout</Text>
             </TouchableOpacity>
       </View>
     );
@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
 wink:{
   backgroundColor: '#ffff00',
   bottom: '-1%',
-  width: '50%',
+  width: '75%',
   borderRadius: radius,
   height: 55,
   textAlign: 'center'
 }, 
 text:{
   textAlign: 'center',
-  fontSize: 40,
+  fontSize: 25,
   fontWeight: 'bold'
 }
 });

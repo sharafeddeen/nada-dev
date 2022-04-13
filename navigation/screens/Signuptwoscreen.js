@@ -1,15 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView} from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image, Button} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function SignupScreen ({navigation}) {
-
-  / --- state variables for:    essential attributes of user signup --- /
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-
 
   //for profile image
   const [image, setImage] = React.useState(null);
@@ -32,62 +25,34 @@ export default function SignupScreen ({navigation}) {
   return (
     <View style={styles.container}>
       <ScrollView>
-
-      <Text style={styles.headerText}>Let's get this profile started!</Text>
+      <Text style={styles.headerText}>Other essential information!</Text>
       <View style={styles.containerInput}>
-        <Text style={styles.inputHeader}>your name</Text>
-        <TextInput  
-          style={styles.inputBox}
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-          placeholder="what should we call you?"
-        />
-      </View>
-
-      <View style={styles.containerInput}>
-        <Text style={styles.inputHeader}>email</Text>
-        <TextInput  
-          style={styles.inputBox}
-          onChangeText={(text) => setEmail(text)}
-          placeholder="totally@obvious.com"
-        />
-      </View>
-
-      <View style={styles.containerInput}>
-        <Text style={styles.inputHeader}>password</Text>
+        <Text style={styles.inputHeader}>Bio</Text>
         <TextInput  
           style={styles.inputBox}
           onChangeText={(text) => setPassword(text)}
-          placeholder=" 6 symbols or more.. "
-          secureTextEntry={true}
+          placeholder="tell us a little bit about yourself"
         />
       </View>
 
+      <View style={styles.containerInput}>
+        <Text style={styles.inputHeader}>Activities </Text>
+        <TextInput  
+          style={styles.inputBox}
+          onChangeText={(text) => setPassword(text)}
+          placeholder="Seperate each by a ','"
+        />
+      </View>
+    
+      <Text style={styles.inputHeader}>Profile Image </Text>
+      <Button title="Change Profile Image" style={styles.button} onPress={pickImage} />
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} 
       <TouchableOpacity
         style={styles.button} 
         onPress={ () => 
           navigation.navigate('BottomTab')
         }>
-        <Text 
-          style={styles.buttonText} 
-          onPress={() => {
-            const auth = getAuth();
-            createUserWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // Now, set up user profile on Firebase Authentication
-                user.displayName = username;
-                // Finally, display to the user their info
-                console.log("Look at you all signed up and stuff!", user)
-                navigation.navigate('SignuptwoScreen')
-              })
-              .catch((error) => {
-                console.log("Error but don't worry -- wer're working on it!")
-                console.log(error);
-              });
-          }}>
-          Create Profile</Text>
+        <Text style={styles.buttonText} > Profile</Text>
       </TouchableOpacity>
       </ScrollView>
     </View>
@@ -105,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
 
   containerInput: {

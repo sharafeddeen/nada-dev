@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'orange', 
+    backgroundColor: '#add8e6', 
+    borderRadius: 20,
     textAlign: 'center',        
 },
 buttonText: {

@@ -5,21 +5,23 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfileScreen ({navigation}) {
   const [image, setImage] = useState(null);
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-      };
+  const [pickedImagePath, setPickedImagePath] = useState('');
+
+  const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+  };
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -29,17 +31,17 @@ export default function ProfileScreen ({navigation}) {
                 style={styles.submit}>
                     <Text>Change First Name</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>Last Name</Text>
+                <Text style={styles.title}>Email</Text>
                <TextInput style={styles.input}></TextInput>
                <TouchableOpacity
                 style={styles.submit}>
-                    <Text>Change Last Name</Text>
+                    <Text>Change Email</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>Phone Number</Text>
-               <TextInput style={styles.input}  keyboardType="numeric"></TextInput>
+                <Text style={styles.title}>Password</Text>
+               <TextInput style={styles.input}></TextInput>
                <TouchableOpacity
                 style={styles.submit}>
-                    <Text>Change Phone Number</Text>
+                    <Text>Change Password</Text>
                 </TouchableOpacity>
                 <Text style={styles.title}>Bio</Text>
                <TextInput style={styles.input}></TextInput>

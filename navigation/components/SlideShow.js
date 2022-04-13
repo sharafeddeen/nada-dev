@@ -5,13 +5,20 @@ import Card2 from '../components/Card2';
 
 
 const Slideshow = () => {
-    const people =[1, 2, 3, 4, 5, 6]
+    
+    const people =[1, 2]
+    const pushPeople = () =>{
+        for(let i = 0; i < 9; i++){
+            people.push(i);
+        }
+    }
+    
 
     const renderItem = ({item, index}) => {
         return(
             <ScrollView 
                 horizontal= {true}
-                decelerationRate={0}
+                decelerationRate={200}
                 snapToInterval={0}
                 snapToAlignment={"start"}
                 alwaysBounceHorizontal={true}

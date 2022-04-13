@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 50,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
 
   containerInput: {
@@ -106,10 +107,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'orange', 
+    backgroundColor: '#add8e6', 
     textAlign: 'center',        
     height: 50,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    borderRadius: 20
   },
   buttonText: {
     fontWeight: 'bold',

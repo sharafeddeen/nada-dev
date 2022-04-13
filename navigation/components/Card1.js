@@ -15,6 +15,7 @@ const radius = 20;
 
 const styles = StyleSheet.create({
     cardContainer:{
+        alignItems: 'center', 
         justifyContent: 'center',
         width: '26%',
         height: 500,
@@ -31,7 +32,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20, 
         fontWeight: 'bold',
-        left: 10,
+        backgroundColor: 'white', 
+        width: '50%', 
+        borderRadius: radius, 
         bottom: 35,
     },
 });
