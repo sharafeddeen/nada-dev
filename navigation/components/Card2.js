@@ -21,38 +21,38 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '26%',
         backgroundColor: '#add8e6',
-        top: 10,
         borderRadius: radius,
-        height: 500,
-        margin: 10
+        height: 505,
+        left: "12%", 
+        top: ".5%"
     },
     bioTitle:{
         fontSize: 25,
-        left: 25,
-        top: -40,
+        left: "7%",
+        top: "-8%",
         fontWeight: 'bold'
     },
     bioText:{
         backgroundColor: 'white',
         fontSize: 15,
         width: '75%',
-        top: -40,
-        left: 25,
+        top: "-40%",
+        left: "8%",
         height: 100,
         borderRadius: 10
     },
     act:{
         fontSize: 25,
-        left: 25,
-        top: -8,
+        left: "8%",
+        top: "-3%",
         fontWeight: 'bold'
     },
     actText:{
         backgroundColor: 'white',
         fontSize: 15,
         width: 250,
-        top: -3,
-        left: 25,
+        top: "0%",
+        left: "8%",
         height: 75,
         borderRadius: 10
     }

@@ -41,7 +41,7 @@ export default function LoginScreen ({navigation}) {
               // Signed in 
               const user = userCredential.user;
               console.log("user logged in successfully!", user)
-              //navigation.navigate('BottomTab')
+              navigation.navigate('BottomTab')
             })
             .catch((error) => {
               console.log("Error during login: user is null?", user === null)
