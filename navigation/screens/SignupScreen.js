@@ -5,9 +5,9 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default function SignupScreen ({navigation}) {
 
   / --- state variables for:    essential attributes of user signup --- /
-  const [username, setUsername] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
+  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   return (
     <View style={styles.container}>
@@ -37,7 +37,7 @@ export default function SignupScreen ({navigation}) {
         <TextInput  
           style={styles.inputBox}
           onChangeText={(text) => setPassword(text)}
-          placeholder=" 6< characters -- goal: so complex you'll forget it"
+          placeholder=" 6 symbols or more.. "
           secureTextEntry={true}
         />
       </View>
@@ -47,19 +47,25 @@ export default function SignupScreen ({navigation}) {
         onPress={ () => 
           navigation.navigate('BottomTab')
         }>
-        <Text style={styles.buttonText} onPress={() => {
-          const auth = getAuth();
-          createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-              // Signed in 
-              const user = userCredential.user;
-              console.log("Look at you all signed up and stuff!")
-            })
-            .catch((error) => {
-              console.log("Error but don't worry -- wer're working on it!")
-              console.log(error);
-            });
-        }}>Create Profile</Text>
+        <Text 
+          style={styles.buttonText} 
+          onPress={() => {
+            const auth = getAuth();
+            createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                // Now, set up user profile on Firebase Authentication
+                user.displayName = username;
+                // Finally, display to the user their info
+                console.log("Look at you all signed up and stuff!", user)
+              })
+              .catch((error) => {
+                console.log("Error but don't worry -- wer're working on it!")
+                console.log(error);
+              });
+          }}>
+          Create Profile</Text>
       </TouchableOpacity>
     </View>
   );
