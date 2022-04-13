@@ -5,25 +5,9 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginScreen ({navigation}) {
 
-  / --- state variables for:    essential attributes of user signup --- /
+  / --- state variables for:    essential attributes of user login --- /
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
-
-  let user = null;
-
-
-  const auth = getAuth();
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      user = userCredential.user;
-      console.log("user logged in successfully!")
-    })
-    .catch((error) => {
-      console.log("Error during login")
-      console.log(error);
-    });
 
   return (
     <View style={styles.container}>
@@ -50,10 +34,20 @@ export default function LoginScreen ({navigation}) {
 
       <TouchableOpacity
         style={styles.button} 
-        onPress={ () => 
-          //navigation.navigate('home')
-          console.log(user)
-        }>
+        onPress={ () => {
+          const auth = getAuth();
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // Signed in 
+              const user = userCredential.user;
+              console.log("user logged in successfully!", user)
+              //navigation.navigate('BottomTab')
+            })
+            .catch((error) => {
+              console.log("Error during login: user is null?", user === null)
+              console.log(error);
+            });
+        }}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
