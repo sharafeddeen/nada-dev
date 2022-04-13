@@ -8,6 +8,8 @@ export default function HomeScreen ({navigation}) {
   const [profiles, setProfiles] = React.useState([{id: 1}, {id: 2}, {id: 3}, {id: 4} ]);
 
   let keyIndex;
+
+  //hitting the hangout button 
   const wantsToHangout = (index) => {
 
     const filteredProfiles = profiles.filter(item => item.id !== index);
@@ -15,7 +17,7 @@ export default function HomeScreen ({navigation}) {
     setProfiles(filteredProfiles);
         
   }
-
+  //rendering each profile card 
   const renderItem = ({item, index}) => {
         return(
           <ScrollView 
@@ -36,16 +38,15 @@ export default function HomeScreen ({navigation}) {
           </ScrollView>
       )
   }
+  //if there is no more profiles in the feed 
   if(profiles.length == 0){
     return (
       <View style={styles.container}>
-          <Text style={styles.nomoretext}>No more profiles! It looks like your really popular!</Text>    
-          <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( keyIndex)}>
-          <Text style={styles.text}> Let's Hangout</Text>
-          </TouchableOpacity>      
+          <Text style={styles.nomoretext}>No more profiles! It looks like your really popular!</Text>         
       </View>
     )
   }
+  //if there is profiles, render them in a flatlist 
   else{
     return (
       <View style={styles.container}>
