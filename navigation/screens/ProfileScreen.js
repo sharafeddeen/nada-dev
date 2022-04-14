@@ -25,12 +25,12 @@ export default function ProfileScreen ({navigation}) {
     return (
       <View style={styles.container}>
         <ScrollView>
-        <Text style={styles.title}>First Name</Text>
-               <TextInput style={styles.input}></TextInput>
-               <TouchableOpacity
-                style={styles.submit}>
-                    <Text>Change First Name</Text>
-                </TouchableOpacity>
+          <Text style={styles.title}>First Name</Text>
+          <TextInput style={styles.input}></TextInput>
+          <TouchableOpacity
+            style={styles.submit}>
+                <Text>Change First Name</Text>
+          </TouchableOpacity>
                 <Text style={styles.title}>Email</Text>
                <TextInput style={styles.input}></TextInput>
                <TouchableOpacity
@@ -66,6 +66,9 @@ export default function ProfileScreen ({navigation}) {
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   title: {
     textAlign: 'left',
     padding: 5,
