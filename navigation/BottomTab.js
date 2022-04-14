@@ -16,7 +16,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const profilesName = 'People';
 const likesName = 'Reactions';
 const personalName = 'Personal Profile';
-const chatName = 'Chat'
+const chatName = 'ChatScreen'
 
 const Tab = createBottomTabNavigator();
 
@@ -33,9 +33,10 @@ function ChatNavigationScreen(){
 export default function Tabs ({navigation}) {
     return (
       <NavigationContainer independent={true}>
-        <Tab.Navigator
+        <Tab.Navigator 
           initialRouteName={profilesName}
                 screenOptions={({route}) =>({
+                    tabBarHideOnKeyboard: true, 
                     tabBarIcon: ({focused,color, size}) =>{
                         let iconName;
                         let rn = route.name;
@@ -58,7 +59,6 @@ export default function Tabs ({navigation}) {
                 <Tab.Screen name={personalName} component={ProfileScreen} />
                 <Tab.Screen name={chatName} component={ChatNavigationScreen} options={{headerShown: false, headerLeft: null }} />
             </Tab.Navigator>
-
       </NavigationContainer>
     );
   }

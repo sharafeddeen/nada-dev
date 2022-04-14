@@ -8,8 +8,6 @@ import LoginScreen from './navigation/screens/LoginScreen';
 import SignupScreen from './navigation/screens/SignupScreen';
 import SignuptwoScreen from './navigation/screens/Signuptwoscreen';
 import BottomTab from './navigation/BottomTab';
-import ChatCard from './navigation/components/ChartCard'
-import ChatTwoScreen from './navigation/screens/ChatTwoScreen';
 import {initializeApp} from 'firebase/app';
 
 const firebaseConfig = {
@@ -33,7 +31,7 @@ export default function App({navigation}) {
       <Stack.Navigator>
         <Stack.Screen name="LoadScreen" component={LoadScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="SignupScreen" component={SignupScreen} />
+        <Stack.Screen name="SignupScreen" component={SignupScreen} /> 
         <Stack.Screen name="SignuptwoScreen" component={SignuptwoScreen} />
         <Stack.Screen name="BottomTab" component={BottomTab} options={{headerShown: false, headerLeft: false }} navigation={navigation}/>
       </Stack.Navigator>

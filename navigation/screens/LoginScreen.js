@@ -62,7 +62,24 @@ export default function LoginScreen ({navigation}) {
 
       <TouchableOpacity
         style={styles.button} 
+<<<<<<< HEAD
         onPress={loginAuth}>
+=======
+        onPress={ () => {
+          const auth = getAuth();
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // Signed in 
+              const user = userCredential.user;
+              console.log("user logged in successfully!", user)
+              navigation.navigate('BottomTab')
+            })
+            .catch((error) => {
+              console.log("Error during login: user is null?", user === null)
+              console.log(error);
+            });
+        }}>
+>>>>>>> 53a3605216d0a38d151fd584614617bd667ae7f6
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
