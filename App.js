@@ -23,15 +23,16 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-//<Stack.Screen name="LoadScreen" component={LoadScreen} />
-//<Stack.Screen name="LoginScreen" component={LoginScreen} />
-//<Stack.Screen name="SignupScreen" component={SignupScreen} />
-//<Stack.Screen name="SignuptwoScreen" component={SignuptwoScreen} />
+
 const Stack = createStackNavigator();
 export default function App({navigation}) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="LoadScreen" component={LoadScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="SignupScreen" component={SignupScreen} /> 
+        <Stack.Screen name="SignuptwoScreen" component={SignuptwoScreen} />
         <Stack.Screen name="BottomTab" component={BottomTab} options={{headerShown: false, headerLeft: false }} navigation={navigation}/>
       </Stack.Navigator>
     </NavigationContainer>
