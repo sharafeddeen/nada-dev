@@ -9,6 +9,34 @@ export default function LoginScreen ({navigation}) {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
 
+  
+  /***************             BACKEND CODE             **********************
+   * 
+   * PURPOSE: to update the user profile with bio, activities, and image.
+   * 
+   * NOTE(S):
+   *          1)  We will be using Firebase "User instances".
+   *              ->  Don't confuse them with "Firebase Auth instances".
+   *          2)  A User object is stored in its own DB.
+   * 
+   * MORE INFO: https://firebase.google.com/docs/auth/users
+   * 
+   ***********                   BEGIN                  ********************/
+
+  const loginAuth = () => {
+    signInWithEmailAndPassword(getAuth(), email, password)
+      .then((userCredential) => {
+        // Signed in 
+        console.log("user logged in successfully!", userCredential)
+        navigation.navigate('BottomTab')
+      })
+      .catch((error) => {
+        console.log("Error during login -- not signed in!")
+        console.log(error);
+      });
+  }
+  
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>If it's not obvious, this is the login page.</Text>
@@ -34,20 +62,7 @@ export default function LoginScreen ({navigation}) {
 
       <TouchableOpacity
         style={styles.button} 
-        onPress={ () => {
-          const auth = getAuth();
-          signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-              // Signed in 
-              const user = userCredential.user;
-              console.log("user logged in successfully!", user)
-              //navigation.navigate('BottomTab')
-            })
-            .catch((error) => {
-              console.log("Error during login: user is null?", user === null)
-              console.log(error);
-            });
-        }}>
+        onPress={loginAuth}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>

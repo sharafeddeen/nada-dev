@@ -28,20 +28,29 @@
  *                          -> Implementation:
  *                             >> Note      --  make sure you enable ES Module support for NodeJS runtime,
  *                                                  (usually done) by adding ("type": "module") to (package.json).
- * ================================================================================================ */
+ * ================================================================================================ *
 
-//const { initializeApp } = require('firebase-admin/app');
-//const { getFunctions } = require('firebase/functions');
-//const { getAuth } = require('firebase-admin/auth');
-//const { getFirestore } = require('firebase-admin/firestore');
 
-//const app = initializeApp();
-//const functions = getFunctions();
-//const firestoreDB = getFirestore();
+const { getFunctions } = require('firebase/functions');
+const { getAuth } = require('firebase-admin/auth');
+const { getFirestore } = require('firebase-admin/firestore');
+const { applicationDefault, initializeApp } = require('firebase-admin/app');
+
+const app = initializeApp();
+
+const functions = getFunctions();
+const auth = getAuth();
+const firestoreDB = getFirestore();
 
 /**Function to automate user creation in Firestore DB.
  * Reason:          to minimize effort in deadling with Firestore DB manually.
  * Job:             creates a user object as a document inside the user collection stored on Firestore DB.
- * */
-//exports.createNewUserFirestore = functions.auth.user().onCreate(() => {});
+ * 
+exports.createNewUserFirestore = functions.auth.user().onCreate((user) => {
+    console.log("Entering Firestore!", user);
+
+    return;
+});
+*/
+
 

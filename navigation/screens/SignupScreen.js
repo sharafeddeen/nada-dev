@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView} from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import * as ImagePicker from 'expo-image-picker';
 
 export default function SignupScreen ({navigation}) {
 
@@ -11,23 +10,33 @@ export default function SignupScreen ({navigation}) {
   const [password, setPassword] = React.useState("");
 
 
-  //for profile image
-  const [image, setImage] = React.useState(null);
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
+  /***************             BACKEND CODE             **********************
+   * 
+   * PURPOSE: to update the user profile with bio, activities, and image.
+   * 
+   * NOTE(S):
+   *          1)  We will be using Firebase "User instances".
+   *              ->  Don't confuse them with "Firebase Auth instances".
+   *          2)  A User object is stored in its own DB.
+   * 
+   * MORE INFO: https://firebase.google.com/docs/auth/users
+   * 
+   ***********                   BEGIN                  ********************/
+  
+  const createUserInAuth = () => {    
+    // 1)     create user instance in Firebase Auth
+    createUserWithEmailAndPassword(getAuth(), email, password)
+      // signed in
+      .then((userCredential) => {
+        userCredential.user.displayName = username;
+        navigation.navigate('SignuptwoScreen');
+      })
+      .catch((error) => {
+        console.log("Error: signup failed!")
+        console.log(error);
+      })
     };
+  
 
   return (
     <View style={styles.container}>
@@ -65,29 +74,8 @@ export default function SignupScreen ({navigation}) {
 
       <TouchableOpacity
         style={styles.button} 
-        onPress={ () => 
-          navigation.navigate('BottomTab')
-        }>
-        <Text 
-          style={styles.buttonText} 
-          onPress={() => {
-            const auth = getAuth();
-            createUserWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // Now, set up user profile on Firebase Authentication
-                user.displayName = username;
-                // Finally, display to the user their info
-                console.log("Look at you all signed up and stuff!", user)
-                navigation.navigate('SignuptwoScreen')
-              })
-              .catch((error) => {
-                console.log("Error but don't worry -- wer're working on it!")
-                console.log(error);
-              });
-          }}>
-          Create Profile</Text>
+        onPress={() => {createUserInAuth}}>
+          <Text style={styles.buttonText}>Create Profile</Text>
       </TouchableOpacity>
       </ScrollView>
     </View>
