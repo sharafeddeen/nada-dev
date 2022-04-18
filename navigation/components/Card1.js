@@ -1,33 +1,32 @@
-import React from 'react'
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native'
-import exampleImage from '../Assets/paul.jpg'
-var name = "Paul Walker"
+import React from 'react';
+import {useState, useEffect} from 'react';
 
-const Card1 = () => {
+import {View, Text, StyleSheet, Dimensions, Image} from 'react-native'
+
+const Card1 = ({name, image}) => {
     return(
         <View style={styles.cardContainer}>
-            <Image style={styles.imageStyle} source={exampleImage}/>
+            <Image style={styles.imageStyle} source={{uri: image}}/>
             <Text style={styles.name}>{name}</Text>
         </View>
     );
 };
 const radius = 20;
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     cardContainer:{
         alignItems: 'center', 
         justifyContent: 'center',
-        width: '26%',
+        width: deviceWidth,
         height: 500,
         borderRadius: radius, 
-        marginBottom: 40,
     },
     imageStyle: {
         height: 500,
         width: '100%',
         borderRadius: radius,
         top: "5%",
-        left: "7%"
         },
     name: {
         textAlign: 'center',
@@ -36,8 +35,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', 
         width: '50%', 
         borderRadius: radius, 
-        bottom: "10%",
-        left: "5%"
+        bottom: '10%'
     },
 });
 export default Card1;

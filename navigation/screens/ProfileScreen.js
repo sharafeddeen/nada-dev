@@ -4,7 +4,8 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,
 import * as ImagePicker from 'expo-image-picker';
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
-
+import Card1 from '../components/Card1';
+import Card2 from '../components/Card2';
 
 
 /* ------------------------------------------------------------------------------------------------------------   
@@ -56,16 +57,25 @@ function ProfilePage ({navigation}) {
   }, []);
 
   return (
-    
-    <View>
-      <Text style={styles.title}>Hello! {user && user?.displayName}</Text>
-      <Text style={styles.title}>This is your email address: {user && user?.email}</Text>
-      <Text style={styles.title}>Your bio: {user && user?.bio}</Text>
-      <Text style={styles.title}>Your activities: {user && user?.activities}</Text>
-      <Text style={styles.title}>Your profile picture below..</Text>
-      <View>
-        <Image source={{uri: user?.profilePicURL}} style={{ width: 200, height: 200 }} />      
-      </View>
+    <View style={{flex: 1}}>
+      <Text style={styles.title}>What other people see</Text>
+          <ScrollView 
+          horizontal= {true}
+          decelerationRate={200}
+          snapToInterval={0}
+          snapToAlignment={"start"}
+          alwaysBounceHorizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentInset={{
+          top: 0,
+          left: 35,
+          bottom: 0,
+          right: 30,
+          }}
+          >
+            <Card1 name={user?.displayName} image={user?.profilePicURL}/>
+            <Card2 bio={user?.bio} activities={user?.activities}/>
+          </ScrollView>
     </View>
 
   );
@@ -138,9 +148,13 @@ function SettingsPage ({navigation}) {
 }
 
 
-
-
 const styles = StyleSheet.create({
+  title:{
+    alignContent: 'center',
+    fontSize: 25,
+    textAlign: 'center',
+    margin: 20
+  },
   container: {
     flex: 1,
   },

@@ -1,11 +1,31 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView, useState} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import { getAuth } from 'firebase/auth';
+import { useEffect} from 'react';
+
 import Card1 from '../components/Card1';
 import Card2 from '../components/Card2';
+import {  query, collection, doc, getDoc, getFirestore, where } from "firebase/firestore";
 
 export default function HomeScreen ({navigation}) {
+  const [user, setUser] = React.useState(null);
+  const uid = getAuth().currentUser.uid;
+  
 
-  const [profiles, setProfiles] = React.useState([{id: 1}, {id: 2}, {id: 3}, {id: 4} ]);
+  let profiles = [1];
+  const getUsers = async () => {
+    try {
+      const docSnapshot = await getDoc(doc(getFirestore(), 'users', uid));
+      const userData = docSnapshot.data();
+      setUser(userData);
+    } catch {
+      console.log("error getting user data from firestore: ProfilePage");
+    }
+  }
+  useEffect(() => {
+    getUsers();
+  }, []);
+
 
   let keyIndex;
 
@@ -33,8 +53,8 @@ export default function HomeScreen ({navigation}) {
               bottom: 0,
               right: 30,
           }}>
-          <Card1></Card1>
-          <Card2></Card2>
+          <Card1 name={user?.displayName} image={user?.profilePicURL}/>
+          <Card2 bio={user?.bio} activities={user?.activities}/>
           </ScrollView>
       )
   }
@@ -75,7 +95,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     margin: 20
-
   },
   container: {
     flex: 1,

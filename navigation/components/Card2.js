@@ -1,30 +1,30 @@
 import React from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 
-const Card2 = () => {
+const Card2 = ({bio, activities}) => {
     return(
         <View style={styles.cardContainer}>
             <Text style={styles.bioTitle}>Bio:</Text>
             <View style={{height: 80}}>
-                <Text style={styles.bioText}>I love driving cars and acting. I want friends and love to drink coffee. I am an actor in the famous fast and furious franchise. I died in 2013 from a car accident.</Text>
+                <Text style={styles.bioText}>{bio}</Text>
             </View>
             <View style={{height: 250}}>
             <Text style={styles.act}>Activties: </Text>
-            <Text style={styles.actText}>Driving, Coffee, Drinking, Partying, Eating</Text>
+            <Text style={styles.actText}>{activities}</Text>
             </View>
         </View>
     );
 };
 const radius = 20;
+const deviceWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     cardContainer:{
         justifyContent: 'center',
-        width: '26%',
+        width: deviceWidth,
         backgroundColor: '#add8e6',
         borderRadius: radius,
-        height: 505,
-        left: "12%", 
-        top: ".5%"
+        height: 500,
+        top: '1%'
     },
     bioTitle:{
         fontSize: 25,
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         width: 250,
         top: "0%",
+        width:"75%",
         left: "8%",
         height: 75,
         borderRadius: 10
