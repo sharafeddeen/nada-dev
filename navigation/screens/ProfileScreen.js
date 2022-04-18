@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Button} from 'react-native';
+import {useState, useEffect} from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, Button} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -35,12 +37,38 @@ export default function ProfileScreen ({navigation}) {
 ------------------------------------------------------------------------------------------------------------ */ 
 
 function ProfilePage ({navigation}) {
-  
+
+  const [user, setUser] = useState(null);
+  const uid = getAuth().currentUser.uid;
+
+  const getUser = async () => {
+    try {
+      const docSnapshot = await getDoc(doc(getFirestore(), 'users', uid));
+      const userData = docSnapshot.data();
+      setUser(userData);
+    } catch {
+      console.log("error getting user data from firestore: ProfilePage");
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
+    
     <View>
-      <Text style={styles.title}>Hey! This is your profile</Text>
+      <Text style={styles.title}>Hello! {user && user?.displayName}</Text>
+      <Text style={styles.title}>This is your email address: {user && user?.email}</Text>
+      <Text style={styles.title}>Your bio: {user && user?.bio}</Text>
+      <Text style={styles.title}>Your activities: {user && user?.activities}</Text>
+      <Text style={styles.title}>Your profile picture below..</Text>
+      <View>
+        <Image source={{uri: user?.profilePicURL}} style={{ width: 200, height: 200 }} />      
+      </View>
     </View>
-  )
+
+  );
 }
 
 

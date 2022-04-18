@@ -26,16 +26,12 @@ export default function SignupScreen ({navigation}) {
   const createUserInAuth = () => {    
     // 1)     create user instance in Firebase Auth
     createUserWithEmailAndPassword(getAuth(), email, password)
-      // signed in
-      .then((userCredential) => {
-        userCredential.user.displayName = username;
-        navigation.navigate('SignuptwoScreen');
-      })
-      .catch((error) => {
-        console.log("Error: signup failed!")
-        console.log(error);
-      })
-    };
+        // either: signed in
+        .then((userCredential) => {userCredential.user.displayName = username})
+        .then(navigation.navigate('SignuptwoScreen'))
+        // or:     error occurred
+        .catch((error) => {console.log("Error: signup failed!", error)})
+  };
   
 
   return (
@@ -75,7 +71,7 @@ export default function SignupScreen ({navigation}) {
       <TouchableOpacity
         style={styles.button} 
         onPress={() => {createUserInAuth}}>
-          <Text style={styles.buttonText}>Create Profile</Text>
+          <Text style={styles.buttonText} onPress={createUserInAuth}>Create Profile</Text>
       </TouchableOpacity>
       </ScrollView>
     </View>
