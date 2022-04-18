@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: deviceWidth,
         height: 500,
-        borderRadius: radius, 
+        borderRadius: radius,
     },
     imageStyle: {
         height: 500,
         width: '100%',
         borderRadius: radius,
-        top: "5%",
+        top: '3%'
         },
     name: {
         textAlign: 'center',

@@ -1,23 +1,33 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView, Dimensions} from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { useEffect} from 'react';
 
 import Card1 from '../components/Card1';
 import Card2 from '../components/Card2';
-import {  query, collection, doc, getDoc, getFirestore, where } from "firebase/firestore";
+import { collection,getFirestore, onSnapshot } from "firebase/firestore";
+
+
+const deviceWidth = Dimensions.get('window').width;
 
 export default function HomeScreen ({navigation}) {
-  const [user, setUser] = React.useState(null);
+  let [profiles, setProfiles] = React.useState([]);
   const uid = getAuth().currentUser.uid;
   
 
-  let profiles = [1];
+  //get all the users in database that dont have the same ID as the current user 
   const getUsers = async () => {
+    let unSub;
     try {
-      const docSnapshot = await getDoc(doc(getFirestore(), 'users', uid));
-      const userData = docSnapshot.data();
-      setUser(userData);
+      unSub = await onSnapshot(collection(getFirestore(), "users"), (snapshot) =>{
+        setProfiles(
+          snapshot.docs.filter((doc)=>doc.id !== uid)
+          .map((doc)=>({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        )
+      })      
     } catch {
       console.log("error getting user data from firestore: ProfilePage");
     }
@@ -30,16 +40,17 @@ export default function HomeScreen ({navigation}) {
   let keyIndex;
 
   //hitting the hangout button 
-  const wantsToHangout = (index) => {
-
-    const filteredProfiles = profiles.filter(item => item.id !== index);
-
-    setProfiles(filteredProfiles);
+  const wantsToHangout = (id) => {
+    console.log(id);
+    const newProfiles = profiles.filter((item) => item.id !== id);
+    setProfiles(newProfiles);
         
   }
+
   //rendering each profile card 
   const renderItem = ({item, index}) => {
         return(
+          <View style={{height: 500}}> 
           <ScrollView 
               horizontal= {true}
               decelerationRate={200}
@@ -53,9 +64,15 @@ export default function HomeScreen ({navigation}) {
               bottom: 0,
               right: 30,
           }}>
-          <Card1 name={user?.displayName} image={user?.profilePicURL}/>
-          <Card2 bio={user?.bio} activities={user?.activities}/>
+          <Card1 name={item.displayName} image={item.profilePicURL}/>
+          <Card2 bio={item.bio} activities={item.activities}/>
+          <View style={{width: deviceWidth, alignItems: 'center',  top: '25%'}}>
+          <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( item.id)}>
+          <Text style={styles.text}> Let's Hangout with {item.displayName}</Text>
+          </TouchableOpacity> 
+          </View> 
           </ScrollView>
+          </View>
       )
   }
   //if there is no more profiles in the feed 
@@ -66,23 +83,23 @@ export default function HomeScreen ({navigation}) {
       </View>
     )
   }
+
+  
   //if there is profiles, render them in a flatlist 
   else{
     return (
       <View style={styles.container}>
-          <View style = {{ alignItems: 'center', justifyContent: 'center', height: '82%'}}>
+        <View style={{height: 500}} >
             <FlatList
+            contentContainerStyle={styles.listView}
             showsVerticalScrollIndicator={false}
             data={profiles}
-            renderItem={renderItem}
+            renderItem={item=> renderItem(item)}
             pagingEnabled
-            keyExtractor={item => keyIndex = item.id}
             decelerationRate= {'normal'}
             />
-          </View>      
-          <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( keyIndex)}>
-          <Text style={styles.text}> Let's Hangout</Text>
-          </TouchableOpacity>      
+          </View> 
+          <Text style={styles.directions}>Scroll all the way to the left of each profile hit the hang out button!</Text>   
       </View>
     );
   }
@@ -91,8 +108,16 @@ export default function HomeScreen ({navigation}) {
 
   const radius = 20;
 const styles = StyleSheet.create({
+  listView: {
+    justifyContent: 'center',
+  },
   nomoretext:{
     fontSize: 25,
+    textAlign: 'center',
+    margin: 20
+  },
+  directions:{
+    fontSize: 20,
     textAlign: 'center',
     margin: 20
   },
@@ -115,15 +140,15 @@ const styles = StyleSheet.create({
 },
 wink:{
   backgroundColor: '#ffff00',
-  bottom: '-1%',
+  bottom: '11%',
   width: '75%',
   borderRadius: radius + 10,
-  height: 55,
+  height: 70,
   textAlign: 'center'
 }, 
 text:{
   textAlign: 'center',
   fontSize: 25,
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 }
 });

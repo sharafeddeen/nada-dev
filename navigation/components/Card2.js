@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#add8e6',
         borderRadius: radius,
         height: 500,
-        top: '1%'
+        top: "0%",
+        
     },
     bioTitle:{
         fontSize: 25,
