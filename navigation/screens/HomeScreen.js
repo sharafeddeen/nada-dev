@@ -52,6 +52,7 @@ export default function HomeScreen ({navigation}) {
         return(
           <View style={{height: 500}}> 
           <ScrollView 
+              
               horizontal= {true}
               decelerationRate={200}
               snapToInterval={0}

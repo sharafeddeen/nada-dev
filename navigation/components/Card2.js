@@ -15,7 +15,7 @@ const Card2 = ({bio, activities}) => {
         </View>
     );
 };
-const radius = 20;
+const radius = 50;
 const deviceWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     cardContainer:{
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         top: "0%",
         width:"75%",
         left: "8%",
-        height: 75,
+        height: 100,
         borderRadius: 10
     }
 });

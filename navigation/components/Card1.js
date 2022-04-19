@@ -11,14 +11,14 @@ const Card1 = ({name, image}) => {
         </View>
     );
 };
-const radius = 20;
+const radius = 50;
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     cardContainer:{
         alignItems: 'center', 
         justifyContent: 'center',
-        width: deviceWidth,
+        width: deviceWidth ,
         height: 500,
         borderRadius: radius,
     },
