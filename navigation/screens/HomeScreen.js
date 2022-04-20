@@ -5,7 +5,7 @@ import { useEffect} from 'react';
 
 import Card1 from '../components/Card1';
 import Card2 from '../components/Card2';
-import { collection,getFirestore, onSnapshot } from "firebase/firestore";
+import { collection,getFirestore, onSnapshot, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 
 const deviceWidth = Dimensions.get('window').width;
@@ -37,42 +37,60 @@ export default function HomeScreen ({navigation}) {
   }, []);
 
 
-  let keyIndex;
-
   //hitting the hangout button 
-  const wantsToHangout = (id) => {
+  const wantsToHangout = async (id) => {
     console.log(id);
+
+    /* ------------- Add to current user's "likes" collection ------------- */
+    const docRef = doc(getFirestore(), 'users', `${uid}`);
+    const snapshot = await getDoc(docRef);
+    
+    // is this the user's first like button hit?
+    if (snapshot.data().likes === undefined) {
+      await setDoc(docRef, { ...snapshot.data(), likes: [id] });
+      const updatedSnapshot = await getDoc(docRef);
+      console.log("user's first like: ", updatedSnapshot.data().likes);
+    
+    } else {
+      const updatedLikes = snapshot.data().likes;
+      updatedLikes.push(id);
+      await updateDoc(docRef, { likes: updatedLikes });
+      const updatedSnapshot = await getDoc(docRef);
+      console.log("new likes are: ", updatedSnapshot.data().likes);
+    }
+    /* ------------------- Finished adding to "likes" ------------------- */    
+
     const newProfiles = profiles.filter((item) => item.id !== id);
-    setProfiles(newProfiles);
-        
+    setProfiles(newProfiles);      
   }
 
   //rendering each profile card 
   const renderItem = ({item, index}) => {
         return(
           <View style={{height: 500}}> 
-          <ScrollView 
-              
-              horizontal= {true}
-              decelerationRate={200}
-              snapToInterval={0}
-              snapToAlignment={"start"}
-              alwaysBounceHorizontal={true}
-              showsHorizontalScrollIndicator={false}
-              contentInset={{
-              top: 0,
-              left: 35,
-              bottom: 0,
-              right: 30,
-          }}>
-          <Card1 name={item.displayName} image={item.profilePicURL}/>
-          <Card2 bio={item.bio} activities={item.activities}/>
-          <View style={{width: deviceWidth, alignItems: 'center',  top: '25%'}}>
-          <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( item.id)}>
-          <Text style={styles.text}> Let's Hangout with {item.displayName}</Text>
-          </TouchableOpacity> 
-          </View> 
-          </ScrollView>
+            <ScrollView 
+                horizontal= {true}
+                decelerationRate={200}
+                snapToInterval={0}
+                snapToAlignment={"start"}
+                alwaysBounceHorizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentInset={{
+                top: 0,
+                left: 35,
+                bottom: 0,
+                right: 30,
+            }}>
+            <Card1 name={item.displayName} image={item.profilePicURL}/>
+            <Card2 bio={item.bio} activities={item.activities}/>
+
+            <View style={{width: deviceWidth, alignItems: 'center',  top: '25%'}}>
+              <TouchableOpacity style={styles.wink} onPress={() => wantsToHangout( item.id)}>
+                <Text style={styles.text}> Let's Hangout with {item.displayName}</Text>
+              </TouchableOpacity> 
+            </View> 
+            
+            </ScrollView>
           </View>
       )
   }
