@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, FlatList,Text, TouchableOpacity, Image, Button, ScrollView} from 'react-native';
 import exampleImage from '../Assets/paul.jpg';
 
-import {onSnapshot, getDoc, doc, collection, getFirestore, query, getDocs, where} from "firebase/firestore";
+import {onSnapshot, getDoc, doc, collection, getFirestore, query, getDocs, where, updateDoc} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 
 
@@ -74,10 +74,30 @@ function FanPage({navigation}){
 
     let keyIndex;
 
-    const match = (index) => {
+    const match = async (index) => {
 
         // match the two on firestore
-        
+        console.log("BEGIN BEGIN BEGIN");
+        const usersQuery = query(collection(getFirestore(), "users"));
+        const querySnapshot = await getDocs(usersQuery);
+        console.log("length is ", index);
+        querySnapshot.forEach( async (queryDoc) => {
+            
+            if(queryDoc.id === index) {
+                let newMatches = queryDoc.get('matches') !== undefined ? [...queryDoc.data().matches, uid] : [uid];
+                console.log("HERE --------- Ref & Matches: ", newMatches);
+                await updateDoc(queryDoc.ref, {"matches": newMatches});
+                let newLikes = queryDoc.get('likes') !== undefined ? queryDoc.get('likes').filter(id => id !== uid) : [];
+                newLikes !== [] ? await updateDoc(queryDoc.ref, {"likes": newLikes}) : null;
+
+            } else if (queryDoc.id === uid) {
+                let newMatches = queryDoc.get('matches') !== undefined ? [...queryDoc.data().matches, index] : [index];
+                console.log("HERE --------- Ref & Matches: ", newMatches);
+                await updateDoc(queryDoc.ref, {"matches": newMatches});
+                let newLikes = queryDoc.get('likes') !== undefined ? queryDoc.get('likes').filter(id => id !== index) : [];
+                newLikes !== [] ? await updateDoc(queryDoc.ref, {"likes": newLikes}) : null;
+            }    
+        });
 
         // refresh page with new info
         const filteredLikes= likes.filter(item => item.id !== index);
@@ -120,7 +140,9 @@ function LikesPage({navigation}) {
         const usersQuery = query(collection(getFirestore(), "users"));
         const querySnapshot = await getDocs(usersQuery);
         querySnapshot.forEach(doc => {
-            likesIDs.includes(doc.id)? likesDocs.push(doc.data()) : null;
+            likesIDs.includes(doc.id) && doc.get('likes') && doc.get('likes').includes(uid)? match(doc.id)
+            : likesIDs.includes(doc.id)? likesDocs.push(doc.data()) 
+            : null;
         });
         console.log("docs of likes: ", likesDocs);
         setLikes(likesDocs);
@@ -141,13 +163,6 @@ function LikesPage({navigation}) {
         )
     }
     let keyIndex;
-    const match = (index) => {
-
-        const filteredLikes= likes.filter(item => item.id !== index);
-    
-        setLikes(filteredLikes);
-            
-    }
 
     if(likes.length > 0){
 

@@ -17,16 +17,25 @@ export default function HomeScreen ({navigation}) {
 
   //get all the users in database that dont have the same ID as the current user 
   const getUsers = async () => {
-    let unSub;
+    let feed = [];
     try {
-      unSub = await onSnapshot(collection(getFirestore(), "users"), (snapshot) =>{
-        setProfiles(
-          snapshot.docs.filter((doc)=>doc.id !== uid)
-          .map((doc)=>({
-            id: doc.id,
-            ...doc.data(),
-          }))
-        )
+      onSnapshot(collection(getFirestore(), "users"), (snapshot) => {
+
+        const currentUserDoc = snapshot.docs.filter(doc => doc.id === uid)[0];
+        console.log("current user: ", currentUserDoc.data());
+        let likes = currentUserDoc.get('likes') !== undefined ? currentUserDoc.get('likes') : [];
+        console.log("current likes: ", likes);
+        let matches = currentUserDoc.get('matches') !== undefined ? currentUserDoc.get('matches') : [];
+        console.log("current matches: ", matches);
+        const feed = snapshot.docs
+              .filter((doc)=>doc.id !== uid)
+              .filter((doc)=>likes .find(id => id===doc.id) === undefined)
+              .filter((doc)=>matches.find(id => id===doc.id) === undefined)
+              .map((doc)=>({
+                id: doc.id,
+                ...doc.data(),
+              }));
+        setProfiles(feed);
       })      
     } catch {
       console.log("error getting user data from firestore: ProfilePage");
