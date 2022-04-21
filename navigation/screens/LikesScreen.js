@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, View, FlatList,Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, FlatList,Text, TouchableOpacity, Image, Button, ScrollView} from 'react-native';
 import exampleImage from '../Assets/paul.jpg';
 
 import {onSnapshot, getDoc, doc, collection, getFirestore, query, getDocs, where} from "firebase/firestore";
@@ -8,12 +8,34 @@ import { getAuth } from 'firebase/auth';
 
 export default function LikesScreen({navigation}){
 
+    const [showFans, setShowFans] = useState(true);
+
+    if (showFans) {
+      return (
+        <View style={styles.container}>
+            <Button title="See your likes" style={styles.button} onPress={() => {setShowFans(false)}}/>
+            <FanPage/>
+        </View>
+      )
+    }
+  
+    return (
+      <View style={styles.container}>
+          <Button title="See your fans" style={styles.button} onPress={() => {setShowFans(true)}}/>
+          <LikesPage/>
+      </View>
+    )
+    
+}
+
+
+function FanPage({navigation}){
+
     let [likes, setLikes] = React.useState([]);
     const uid = getAuth().currentUser.uid;
 
     //get all the users in database that dont have the same ID as the current user 
     const getUsers = async () => {
-      const currentUserDocRef = getDoc(doc(getFirestore(), 'users', `${uid}`));
       try {
         console.log("BEGIN BEGIN BEGIN");
         const usersQuery = query(collection(getFirestore(), "users"));
@@ -21,8 +43,8 @@ export default function LikesScreen({navigation}){
         let fans = [];
         querySnapshot.forEach((doc) => {
             console.log(doc.id, '=>', doc.data());
-            if(doc.data().hasOwnProperty('likes') && doc.data().likes.length > 0) {
-                fans.push(doc.data());
+            if(doc.data().hasOwnProperty('likes') && doc.data().likes.includes(uid)) {
+                fans.push({id: doc.id, ...doc.data()});
             }
         });
         console.log("fans are: ", fans);
@@ -49,17 +71,22 @@ export default function LikesScreen({navigation}){
         </View>
         )
     }
+
     let keyIndex;
+
     const match = (index) => {
 
+        // match the two on firestore
+        
+
+        // refresh page with new info
         const filteredLikes= likes.filter(item => item.id !== index);
-    
         setLikes(filteredLikes);
             
     }
     if(likes.length > 0){
         return(
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, width: '100%'}}>
                 <Text style={{fontSize: 20, fontWeight: 'bold', alignSelf: 'center'}}> Here are your fans </Text>
                 <FlatList
                 showsVerticalScrollIndicator={false}
@@ -73,16 +100,85 @@ export default function LikesScreen({navigation}){
     else{
         return(
             <View style={styles.container}>
-                <Text style={styles.nomoretext}>Hmm. You either don't like people or you really do like to talk to everyone</Text>
+                <Text style={styles.nomoretext}>Hmm. You either don't have fans yet or you really do like to talk to everyone</Text>
             </View>
         )
     }
     
 }
+
+function LikesPage({navigation}) {
+
+    const [likes, setLikes] = useState([]);
+    const uid = getAuth().currentUser.uid;
+
+    const getUserLikes = async () => { 
+        const currentUserSnap = await getDoc(doc(getFirestore(), 'users', `${uid}`));
+        let likesIDs = currentUserSnap.data().hasOwnProperty('likes') ? currentUserSnap.data().likes : [];
+
+        let likesDocs = [];
+        const usersQuery = query(collection(getFirestore(), "users"));
+        const querySnapshot = await getDocs(usersQuery);
+        querySnapshot.forEach(doc => {
+            likesIDs.includes(doc.id)? likesDocs.push(doc.data()) : null;
+        });
+        console.log("docs of likes: ", likesDocs);
+        setLikes(likesDocs);
+    }
+    useEffect(() => { 
+        getUserLikes();
+    }, []);
+
+    //rendering each like card 
+    const renderItem = ({item, index}) => {
+        return(
+        <View style={styles.cardContainer}>
+            <Image style={styles.imageStyle} source={{uri: item.profilePicURL}}/>
+            <Text style={styles.name}> {item.displayName} </Text>
+            <Text style={styles.bio}> {item.bio} </Text>
+            <Text style={styles.activities}> {item.activities} </Text>
+        </View>
+        )
+    }
+    let keyIndex;
+    const match = (index) => {
+
+        const filteredLikes= likes.filter(item => item.id !== index);
+    
+        setLikes(filteredLikes);
+            
+    }
+
+    if(likes.length > 0){
+
+        return(
+            <View style={{flex: 1, width: '100%'}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', alignSelf: 'center'}}> Here are your likes </Text>
+                <FlatList
+                showsVerticalScrollIndicator={false}
+                data={likes}
+                renderItem={renderItem}
+                keyExtractor={item => keyIndex = item.email}
+                />            
+            </View>
+        );
+
+    } else {
+
+        return (
+            <View>
+                <Text stlye={styles.nomoretext}> Your likes {likes} will appear here!  </Text>
+            </View>
+        )
+    }
+
+}
+
 const radius = 20;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
