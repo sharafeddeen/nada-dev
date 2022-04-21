@@ -1,9 +1,41 @@
 import * as React from 'react';
 import {View, Text, FlatList, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import exampleImage from '../Assets/paul.jpg'
+import { getAuth } from 'firebase/auth';
+import { collection,getFirestore, onSnapshot, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { useState, useEffect } from 'react';
 
 export default function ChatScreen({navigation}){
-    const [chats] = React.useState([{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10}]);
+    const uid = getAuth().currentUser.uid;
+
+    const [chats, setChats] = useState([]);
+
+    //get all the users in database that dont have the same ID as the current user 
+    const getUsers = async () => {
+        try {
+        onSnapshot(collection(getFirestore(), "users"), (snapshot) => {
+
+            const currentUserDoc = snapshot.docs.filter(doc => doc.id === uid)[0];
+            console.log("current user: ", currentUserDoc.data());
+            let likes = currentUserDoc.get('likes') !== undefined ? currentUserDoc.get('likes') : [];
+            console.log("current likes: ", likes);
+            let matches = currentUserDoc.get('matches') !== undefined ? currentUserDoc.get('matches') : [];
+            console.log("current matches: ", matches);
+            const feed = snapshot.docs
+                .filter((doc)=>doc.id !== uid)
+                .filter((doc)=>matches.includes(doc.id))
+                .map((doc)=>({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+            setChats(feed);
+        })      
+        } catch {
+        console.log("error getting user data from firestore: ProfilePage");
+        }
+  }
+  useEffect(() => {
+    getUsers();
+  }, []);
 
     let keyIndex;
     //rendering each like card 
@@ -11,9 +43,9 @@ export default function ChatScreen({navigation}){
         return(
             <View style={styles.cardContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-                <Image style={styles.imageStyle} source={exampleImage} />
-                <Text style={styles.name}>Vin Diesel</Text>
-                <Text style={styles.message}>You can do anything with family and I love to drive</Text>
+                <Image style={styles.imageStyle} source={{uri: item.profilePicURL}} />
+                <Text style={styles.name}>{item.displayName}</Text>
+                <Text style={styles.message}>{item.bio}</Text>
             </TouchableOpacity>
             </View>
         )

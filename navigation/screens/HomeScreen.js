@@ -17,7 +17,6 @@ export default function HomeScreen ({navigation}) {
 
   //get all the users in database that dont have the same ID as the current user 
   const getUsers = async () => {
-    let feed = [];
     try {
       onSnapshot(collection(getFirestore(), "users"), (snapshot) => {
 
@@ -29,8 +28,8 @@ export default function HomeScreen ({navigation}) {
         console.log("current matches: ", matches);
         const feed = snapshot.docs
               .filter((doc)=>doc.id !== uid)
-              .filter((doc)=>likes .find(id => id===doc.id) === undefined)
-              .filter((doc)=>matches.find(id => id===doc.id) === undefined)
+              .filter((doc)=>likes.includes(doc.id) === false)
+              .filter((doc)=>matches.includes(doc.id) === false)
               .map((doc)=>({
                 id: doc.id,
                 ...doc.data(),
