@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
       cardContainer:{
         flex: 1,
         width: '95%',
-        height: '100%',
+        height: 150,
         backgroundColor: '#add8e6',
         borderRadius: radius,
         shadowColor: '#000',
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffff00', 
         width: '30%',
         left: "46%",
-        top: "-175%",
+        top: "-160%",
         borderRadius: 20,
     },
     nomoretext:{
