@@ -37,7 +37,7 @@ export default function HomeScreen ({navigation}) {
         setProfiles(feed);
       })      
     } catch {
-      console.log("error getting user data from firestore: ProfilePage");
+      console.log("error getting user data from firestore: HomeScreen");
     }
   }
   useEffect(() => {

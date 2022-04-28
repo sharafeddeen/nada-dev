@@ -140,7 +140,8 @@ function LikesPage({navigation}) {
         const usersQuery = query(collection(getFirestore(), "users"));
         const querySnapshot = await getDocs(usersQuery);
         querySnapshot.forEach(doc => {
-            likesIDs.includes(doc.id) && doc.get('likes') && doc.get('likes').includes(uid)? match(doc.id)
+            likesIDs.includes(doc.id) && doc.get('likes') && doc.get('likes').includes(uid) ? 
+                match(doc.id)
             : likesIDs.includes(doc.id)? likesDocs.push(doc.data()) 
             : null;
         });

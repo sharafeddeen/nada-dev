@@ -30,7 +30,7 @@ export default function ChatScreen({navigation}){
             setChats(feed);
         })      
         } catch {
-        console.log("error getting user data from firestore: ProfilePage");
+        console.log("error getting user data from firestore: ChatScreen");
         }
   }
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function ChatScreen({navigation}){
     const renderItem = ({item, index}) => {
         return(
             <View style={styles.cardContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Chat', {item})}>
                 <Image style={styles.imageStyle} source={{uri: item.profilePicURL}} />
                 <Text style={styles.name}>{item.displayName}</Text>
                 <Text style={styles.message}>{item.bio}</Text>
