@@ -126,7 +126,7 @@ export default function HomeScreen ({navigation}) {
             decelerationRate= {'normal'}
             />
           </View> 
-          <Text style={styles.directions}>Scroll all the way to the left of each profile hit the hang out button!</Text>   
+          <Text style={styles.directions}>Scroll all the way to the left of each profile and hit the hang out button!</Text>   
       </View>
     );
   }
