@@ -1,5 +1,5 @@
 {
-  "name": "test2",
+  "name": "nada",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -7,7 +7,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "predeploy": "expo build:web",
+    "deploy-hosting": "npm run predeploy && firebase deploy --only hosting"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.2.0",
@@ -29,7 +31,9 @@
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.15.0",
-    "xhr2": "^0.2.1"
+    "xhr2": "^0.2.1",
+    "expo-updates": "~0.11.7",
+    "expo-dev-client": "~0.8.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

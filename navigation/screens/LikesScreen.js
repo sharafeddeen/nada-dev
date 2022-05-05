@@ -65,7 +65,7 @@ function FanPage({navigation}){
             <Text style={styles.name}> {item.displayName} </Text>
             <Text style={styles.bio}> {item.bio} </Text>
             <Text style={styles.activities}> {item.activities} </Text>
-            <TouchableOpacity style={styles.wink} onPress={()=>match(keyIndex)}>
+            <TouchableOpacity style={styles.fan_wink} onPress={()=>match(keyIndex)}>
                 <Text>Let's Hangout</Text>
             </TouchableOpacity>
         </View>
@@ -249,6 +249,13 @@ const styles = StyleSheet.create({
         width: '30%',
         left: "46%",
         top: "-160%",
+        borderRadius: 20,
+    },
+    fan_wink: {
+        backgroundColor: '#ffff00', 
+        width: '30%',
+        left: "46%",
+        top: "-80%",
         borderRadius: 20,
     },
     nomoretext:{
